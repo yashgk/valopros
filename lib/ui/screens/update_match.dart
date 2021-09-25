@@ -27,40 +27,21 @@ class _UpdateMatchState extends State<UpdateMatch> {
       body: Container(
         decoration: const BoxDecoration(
             image: DecorationImage(
-                fit: BoxFit.cover, image: AssetImage('assets/images/bg1.jpg'))),
+                fit: BoxFit.cover, image: AssetImage('assets/images/bg2.jpg'))),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Padding(
-              padding: EdgeInsets.only(top: SizeConfig.screenHeight! * 0.05),
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  CircleAvatar(
-                    backgroundColor: AppColors.tomato,
-                    radius: SizeConfig.screenHeight! * 0.07,
-                  ),
-                  Positioned(
-                      bottom: 0,
-                      right: SizeConfig.screenWidth! / 2.5,
-                      child: Container(
-                          decoration: const BoxDecoration(
-                              shape: BoxShape.circle, color: AppColors.white),
-                          child: const Icon(Icons.add)))
-                ],
-              ),
-            ),
-            Container(
-              height: SizeConfig.screenHeight! * 0.05,
-              color: AppColors.tomato,
-              child: const Center(
-                child: Text(
-                  'SUBMIT',
-                  style: AppStyles.blackNormal18,
-                ),
-              ),
-            )
+             Card(child: Column(
+              children: [
+                
+              ],
+            ),),
+             Card(child: Column(
+              children: [
+                
+              ],
+            ),),
           ],
         ),
       ),

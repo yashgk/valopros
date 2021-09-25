@@ -14,8 +14,8 @@ class CustomButton extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Container(
-        width: SizeConfig.screenWidth! * 0.4,
-        height: SizeConfig.screenHeight! * 0.04,
+        width: SizeConfig.screenWidth! * 0.45,
+        height: SizeConfig.screenHeight! * 0.05,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
           color: AppColors.tomato,

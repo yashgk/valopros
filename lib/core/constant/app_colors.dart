@@ -6,4 +6,6 @@ class AppColors {
   static const tomato = Color(0xFFF74451);
   static const text = Color(0xFF042E27);
   static const background = Color(0xFFE5E5E5);
+  static const tileBg = Color(0xFFC4C4C4);
+
 }

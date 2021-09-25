@@ -5,6 +5,7 @@ import 'package:valopros/core/constant/sizeconfig.dart';
 import 'package:valopros/ui/screens/add_player.dart';
 import 'package:valopros/ui/screens/add_team.dart';
 import 'package:valopros/ui/screens/add_tournament.dart';
+import 'package:valopros/ui/screens/edit_team.dart';
 import 'package:valopros/ui/screens/update_match.dart';
 import 'package:valopros/ui/widgets/custom_button.dart';
 
@@ -33,7 +34,7 @@ class _HomePageState extends State<HomePage> {
                 height: SizeConfig.screenHeight! * 0.1,
               ),
               SizedBox(
-                height: SizeConfig.screenHeight! * 0.4,
+                height: SizeConfig.screenHeight! * 0.3,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
@@ -50,7 +51,7 @@ class _HomePageState extends State<HomePage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         SizedBox(
-                            width: SizeConfig.screenWidth! * 0.28,
+                            width: SizeConfig.screenWidth! * 0.32,
                             child: CustomButton(
                               lable: 'ADD TEAM',
                               onTap: () {
@@ -61,15 +62,20 @@ class _HomePageState extends State<HomePage> {
                               },
                             )),
                         SizedBox(
-                          width: SizeConfig.screenWidth! * 0.02,
+                          width: SizeConfig.screenWidth! * 0.04,
                         ),
                         SizedBox(
                           width: SizeConfig.screenWidth! * 0.1,
                           child: InkWell(
-                            onTap: () {},
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => EditTeam()));
+                            },
                             child: Container(
                               width: SizeConfig.screenWidth! * 0.4,
-                              height: SizeConfig.screenHeight! * 0.04,
+                              height: SizeConfig.screenHeight! * 0.05,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(8),
                                 color: AppColors.tomato,
@@ -91,13 +97,6 @@ class _HomePageState extends State<HomePage> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => AddTournament()));
-                      },
-                    ),
-                    CustomButton(
-                      lable: 'ADD TEAM',
-                      onTap: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => AddTeam()));
                       },
                     ),
                     CustomButton(
