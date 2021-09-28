@@ -6,6 +6,7 @@ import 'package:valopros/ui/widgets/custom_add_box.dart';
 import 'package:valopros/ui/widgets/custom_appbar.dart';
 import 'package:valopros/ui/widgets/custom_container.dart';
 import 'package:valopros/ui/widgets/custom_list_tile.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AddTournament extends StatefulWidget {
   const AddTournament({Key? key}) : super(key: key);
@@ -24,7 +25,7 @@ class _AddTournamentState extends State<AddTournament> {
     'US',
     'Europe',
     'British',
-    'Austrelia',
+    'Australia',
   ];
   @override
   Widget build(BuildContext context) {
@@ -197,10 +198,21 @@ class _AddTournamentState extends State<AddTournament> {
             Container(
               height: SizeConfig.screenHeight! * 0.05,
               color: AppColors.tomato,
-              child: const Center(
-                child: Text(
-                  'SUBMIT',
-                  style: AppStyles.blackNormal18,
+              child:  Center(
+                child: FlatButton(
+                  onPressed: () {
+                    Map<String, dynamic> data = {
+                      "Tourname-Name": tournamentCtrl.text,
+                      "Prize-Pool": prizeCtrl.text,
+                      "Country": region.toString(),
+                      "Sponsers": sponserCtrl.text
+                    };
+                    FirebaseFirestore.instance.collection("ADD-TOURNAMENT").add(data);
+                  },
+                  child: const Text(
+                    'SUBMIT',
+                    style: AppStyles.blackNormal18,
+                  ),
                 ),
               ),
             )
