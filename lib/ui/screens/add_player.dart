@@ -1,9 +1,15 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:valopros/core/constant/app_colors.dart';
 import 'package:valopros/core/constant/app_style.dart';
 import 'package:valopros/core/constant/sizeconfig.dart';
 import 'package:valopros/ui/widgets/custom_appbar.dart';
 import 'package:valopros/ui/widgets/custom_container.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:image_picker/image_picker.dart';
 
 class AddPlayer extends StatefulWidget {
   const AddPlayer({Key? key}) : super(key: key);
@@ -13,6 +19,20 @@ class AddPlayer extends StatefulWidget {
 }
 
 class _AddPlayerState extends State<AddPlayer> {
+  //initializing Use of FirebaseStorage/Selecting with ImagePicker
+  var mStorage = FirebaseStorage.instance;
+  XFile? _image;
+  final picker = ImagePicker();
+
+  Future pickImage() async {
+    var image = await picker.pickImage(source: ImageSource.gallery);
+
+    setState(() {
+      _image=image;
+      print("Image Path $_image");
+    });
+  }
+
   TextEditingController ignCtrl = TextEditingController();
   TextEditingController playerNameCtrl = TextEditingController();
   String nationality = 'India';
@@ -23,7 +43,7 @@ class _AddPlayerState extends State<AddPlayer> {
     'US',
     'Europe',
     'British',
-    'Austrelia',
+    'Australia',
   ];
   List<String> agent1List = ['A', 'B', 'C', 'D', 'E'];
   List<String> agent2List = ['a', 'b', 'c', 'd', 'e'];
@@ -67,7 +87,7 @@ class _AddPlayerState extends State<AddPlayer> {
                       bottom: 0,
                       right: SizeConfig.screenWidth! / 2.5,
                       child: InkWell(
-                        onTap: () {},
+                        onTap: () => pickImage(),
                         child: Container(
                             decoration: const BoxDecoration(
                                 shape: BoxShape.circle, color: AppColors.white),
@@ -179,10 +199,26 @@ class _AddPlayerState extends State<AddPlayer> {
             Container(
               height: SizeConfig.screenHeight! * 0.05,
               color: AppColors.tomato,
-              child: const Center(
-                child: Text(
-                  'SUBMIT',
-                  style: AppStyles.blackNormal18,
+              child: Center(
+                child: FlatButton(
+                  onPressed: () {
+                    //Saving user input fields to fireStore
+
+                    Map<String, dynamic> data = {
+                      "Ign": ignCtrl.text,
+                      "Nationality": nationality.toString(),
+                      "PlayerName": playerNameCtrl.text,
+                      "Agent1": agent1,
+                      "Agent2": agent2
+                    };
+                    FirebaseFirestore.instance
+                        .collection("ADD-PLAYER")
+                        .add(data);
+                  },
+                  child: const Text(
+                    'SUBMIT',
+                    style: AppStyles.blackNormal18,
+                  ),
                 ),
               ),
             )
