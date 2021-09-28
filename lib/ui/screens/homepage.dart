@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:valopros/core/constant/app_colors.dart';
 import 'package:valopros/core/constant/app_style.dart';
@@ -6,7 +7,6 @@ import 'package:valopros/ui/screens/add_player.dart';
 import 'package:valopros/ui/screens/add_team.dart';
 import 'package:valopros/ui/screens/add_tournament.dart';
 import 'package:valopros/ui/screens/edit_team.dart';
-import 'package:valopros/ui/screens/update_match.dart';
 import 'package:valopros/ui/widgets/custom_button.dart';
 
 class HomePage extends StatefulWidget {
@@ -17,6 +17,22 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  List<String> teamList = [];
+  CollectionReference teams = FirebaseFirestore.instance.collection('Teams');
+  void getTeams() async {
+    await teams.get().then((value) async {
+      for (int i = 0; i < value.docs.length; i++) {
+        teamList.add(value.docs.elementAt(i).get('teamName'));
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    getTeams();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -68,10 +84,46 @@ class _HomePageState extends State<HomePage> {
                           width: SizeConfig.screenWidth! * 0.1,
                           child: InkWell(
                             onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => EditTeam()));
+                              getTeams();
+                              showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return Dialog(
+                                      child: ListView.builder(
+                                          shrinkWrap: true,
+                                          itemCount: teamList.length,
+                                          itemBuilder: (context, index) {
+                                            return Container(
+                                              height: SizeConfig.screenHeight! *
+                                                  0.05,
+                                              width:
+                                                  SizeConfig.screenWidth! * 0.4,
+                                              color: AppColors.tomato,
+                                              child: InkWell(
+                                                onTap: () {
+                                                  Navigator.pop(context);
+                                                  Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              EditTeam(
+                                                                teamName:
+                                                                    teamList[
+                                                                        index],
+                                                              )));
+                                                },
+                                                child: Text(
+                                                  teamList[index],
+                                                  style: AppStyles.blackNormal18
+                                                      .copyWith(
+                                                          color:
+                                                              AppColors.white),
+                                                ),
+                                              ),
+                                            );
+                                          }),
+                                    );
+                                  });
                             },
                             child: Container(
                               width: SizeConfig.screenWidth! * 0.4,
@@ -99,15 +151,15 @@ class _HomePageState extends State<HomePage> {
                                 builder: (context) => AddTournament()));
                       },
                     ),
-                    CustomButton(
-                      lable: 'UPDATE MATCH',
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => UpdateMatch()));
-                      },
-                    ),
+                    // CustomButton(
+                    //   lable: 'UPDATE MATCH',
+                    //   onTap: () {
+                    //     Navigator.push(
+                    //         context,
+                    //         MaterialPageRoute(
+                    //             builder: (context) => UpdateMatch()));
+                    //   },
+                    // ),
                   ],
                 ),
               ),
