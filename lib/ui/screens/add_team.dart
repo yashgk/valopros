@@ -6,6 +6,7 @@ import 'package:valopros/ui/widgets/custom_add_box.dart';
 import 'package:valopros/ui/widgets/custom_appbar.dart';
 import 'package:valopros/ui/widgets/custom_container.dart';
 import 'package:valopros/ui/widgets/custom_list_tile.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AddTeam extends StatefulWidget {
   const AddTeam({Key? key}) : super(key: key);
@@ -24,8 +25,8 @@ class _AddTeamState extends State<AddTeam> {
     'India',
     'US',
     'Europe',
-    'British',
-    'Austrelia',
+    'Britain',
+    'Australia',
   ];
   @override
   Widget build(BuildContext context) {
@@ -179,10 +180,23 @@ class _AddTeamState extends State<AddTeam> {
             Container(
               height: SizeConfig.screenHeight! * 0.05,
               color: AppColors.tomato,
-              child: const Center(
-                child: Text(
-                  'SUBMIT',
-                  style: AppStyles.blackNormal18,
+              child: Center(
+                child: FlatButton(
+                  onPressed: () {
+                    Map<String, dynamic> data = {
+                      "Team-Name": teamNameCtrl.text,
+                      "Owner": ownerCtrl.text,
+                      "Nationality" : region.toString(),
+
+                      "Country": countryCtrl.text,
+                      "Sponsers": sponserCtrl.text
+                    };
+                    FirebaseFirestore.instance.collection("ADD-TEAM").add(data);
+                  },
+                  child: const Text(
+                    'SUBMIT',
+                    style: AppStyles.blackNormal18,
+                  ),
                 ),
               ),
             )
