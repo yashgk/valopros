@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:valopros/core/constant/app_colors.dart';
 import 'package:valopros/core/constant/app_style.dart';
@@ -30,6 +31,21 @@ class _UpdateMatchState extends State<UpdateMatch> {
   TextEditingController totalB = TextEditingController();
   List<List<TextEditingController>> list = [];
   List<List<TextEditingController>> listB = [];
+
+  @override
+  void dispose() {
+    print('dispose callaed');
+    tournamentList.clear();
+    teamList.clear();
+    teamAMembers.clear();
+    teamBMembers.clear();
+    totalA.clear();
+    totalB.clear();
+    list.clear();
+    listB.clear();
+    super.dispose();
+  }
+
   Future fetchTournament() async {
     setState(() {
       isLoading = true;
@@ -572,14 +588,34 @@ class _UpdateMatchState extends State<UpdateMatch> {
                             });
                           });
                         }
-                        // for (int i = 0; i < listB.length; i++) {
-                        //   for (int j = 0; j < listB[i].length; j++) {
-                        //     print(listB[i][j].text);
-                        //   }
-                        // }
+                        for (int i = 0; i < listB.length; i++) {
+                          await players
+                              .where('playerName', isEqualTo: teamBMembers[i])
+                              .get()
+                              .then((value) async {
+                            var docID = value.docs.elementAt(0).id;
+                            await players.doc(docID).update({
+                              'kills': listB[i][0].text,
+                              'deaths': listB[i][1].text,
+                              'assists': listB[i][2].text,
+                              'acs': listB[i][3].text
+                            });
+                          });
+                        }
+
+                        await tournaments
+                            .where('tournamentName', isEqualTo: tournament)
+                            .get()
+                            .then((value) async {
+                          var docId = value.docs.elementAt(0).id;
+                          await tournaments.doc(docId).update({
+                            'scores': {teama: totalA.text, teamb: totalB.text}
+                          });
+                        });
                         setState(() {
                           isLoading = false;
                         });
+                        Navigator.pop(context);
                       },
                       child: Container(
                         height: SizeConfig.screenHeight! * 0.05,
