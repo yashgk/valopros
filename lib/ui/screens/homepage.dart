@@ -7,6 +7,7 @@ import 'package:valopros/ui/screens/add_player.dart';
 import 'package:valopros/ui/screens/add_team.dart';
 import 'package:valopros/ui/screens/add_tournament.dart';
 import 'package:valopros/ui/screens/edit_team.dart';
+import 'package:valopros/ui/screens/update_match.dart';
 import 'package:valopros/ui/widgets/custom_button.dart';
 
 class HomePage extends StatefulWidget {
@@ -151,15 +152,15 @@ class _HomePageState extends State<HomePage> {
                                 builder: (context) => AddTournament()));
                       },
                     ),
-                    // CustomButton(
-                    //   lable: 'UPDATE MATCH',
-                    //   onTap: () {
-                    //     Navigator.push(
-                    //         context,
-                    //         MaterialPageRoute(
-                    //             builder: (context) => UpdateMatch()));
-                    //   },
-                    // ),
+                    CustomButton(
+                      lable: 'UPDATE MATCH',
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => UpdateMatch()));
+                      },
+                    ),
                   ],
                 ),
               ),
